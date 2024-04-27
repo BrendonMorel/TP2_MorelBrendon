@@ -3,6 +3,7 @@
 namespace App\Repository\Eloquent;
 
 use App\Repository\RepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements RepositoryInterface
@@ -25,9 +26,9 @@ class BaseRepository implements RepositoryInterface
 
     /**
      * @param int $perPage
-     * @return Model
+     * @return Collection
      */
-    public function getAll(int $perPage = 0): Model
+    public function getAll(int $perPage = 0): Collection
     {
         if ($perPage > 0) {
             return $this->model->paginate($perPage);
@@ -48,7 +49,7 @@ class BaseRepository implements RepositoryInterface
     /**
      * @param int $id
      * @param array $content
-     * @return bool
+     * @return Model
      */
     public function update(int $id, array $content): Model
     {
