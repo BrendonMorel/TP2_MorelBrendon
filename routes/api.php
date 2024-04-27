@@ -1,17 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
 */
 
 Route::get('/films', 'App\Http\Controllers\FilmController@index');
@@ -30,5 +24,5 @@ Route::group(['middleware' => 'throttle:60,1', 'auth:sanctum'], function () {
     Route::post('/films/{film_id}/critics', 'App\Http\Controllers\CriticController@store')->middleware('critic_limit');
 
     Route::get('/users/{id}', 'App\Http\Controllers\UserController@show')->middleware('check_user_ownership');;
-    Route::put('/users/{id}/password', 'App\Http\Controllers\UserController@update')->middleware('check_user_ownership');;
+    Route::put('/users/{id}/password', 'App\Http\Controllers\UserController@update')->middleware('check_user_ownership')->middleware('confirm_password_match');
 });
