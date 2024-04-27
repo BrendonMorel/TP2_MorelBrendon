@@ -1,0 +1,173 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Films API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/signup": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Crée un utilisateur",
+                "description": "Crée un nouvel utilisateur avec les données fournies.",
+                "operationId": "65b7ef1b1e076c033bf91055f53bd9a1",
+                "requestBody": {
+                    "description": "Données utilisateur",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "login",
+                                    "password",
+                                    "email",
+                                    "last_name",
+                                    "first_name"
+                                ],
+                                "properties": {
+                                    "login": {
+                                        "description": "Nom d'utilisateur de l'utilisateur",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Mot de passe de l'utilisateur",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Adresse e-mail de l'utilisateur",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "last_name": {
+                                        "description": "Nom de famille de l'utilisateur",
+                                        "type": "string"
+                                    },
+                                    "first_name": {
+                                        "description": "Prénom de l'utilisateur",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur créé avec succès"
+                    },
+                    "422": {
+                        "description": "Entité non traitable - Erreur de validation"
+                    },
+                    "500": {
+                        "description": "Erreur de serveur"
+                    }
+                }
+            }
+        },
+        "/api/signin": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Connexion de l'utilisateur",
+                "description": "Authentifie l'utilisateur avec les informations fournies et retourne un jeton d'authentification en cas de succès.",
+                "operationId": "b5cee56757c3c79c5b5f115fdc33f460",
+                "requestBody": {
+                    "description": "Données d'identification de l'utilisateur",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "login",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "login": {
+                                        "description": "Nom d'utilisateur de l'utilisateur",
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "password": {
+                                        "description": "Mot de passe de l'utilisateur",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Connexion réussie - Un jeton d'authentification est retourné.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "description": "Token d'authentification",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Connexion échouée"
+                    },
+                    "422": {
+                        "description": "Entité non traitable - Erreur de validation"
+                    },
+                    "500": {
+                        "description": "Erreur de serveur"
+                    }
+                }
+            }
+        },
+        "/api/signout": {
+            "get": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Déconnexion de l'utilisateur",
+                "description": "Déconnecte l'utilisateur en révoquant tous ses jetons d'authentification.",
+                "operationId": "43ce3b3d0b0c7a68db4f95f44ddf0a2c",
+                "responses": {
+                    "204": {
+                        "description": "Déconnexion réussie - Les jetons d'authentification ont été révoqués.",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Échec de la déconnexion - Utilisateur non authentifié."
+                    },
+                    "500": {
+                        "description": "Erreur de serveur."
+                    }
+                },
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Token": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
