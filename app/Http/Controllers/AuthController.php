@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Database\QueryException;
 
 class AuthController extends Controller
 {
@@ -77,7 +75,8 @@ class AuthController extends Controller
                 'password' => 'required|max:255',
                 'email' => 'required|email|unique:users',
                 'last_name' => 'required|max:50',
-                'first_name' => 'required|max:50'
+                'first_name' => 'required|max:50',
+                'role_id' => 'required|exists:roles,id'
             ]);
 
             // Créer un nouvel utilisateur
@@ -86,7 +85,8 @@ class AuthController extends Controller
                 'password' => bcrypt($request['password']),
                 'email' => $request['email'],
                 'last_name' => $request['last_name'],
-                'first_name' => $request['first_name']
+                'first_name' => $request['first_name'],
+                'role_id' => $request['role_id']
             ]);
 
             return response()->json(['message' => USER_CREATED_MSG], CREATED);

@@ -9,7 +9,10 @@ use App\Models\Film;
 
 class FilmController extends Controller
 {   
-
+    public function index(Request $request)
+    {
+        return response()->json(['message' => $request->user()->id], OK);
+    }
     
 }
 
