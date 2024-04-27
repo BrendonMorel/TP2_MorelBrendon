@@ -23,12 +23,12 @@ Route::group(['middleware' => 'throttle:5,1'], function () {
 });
 
 Route::group(['middleware' => 'throttle:60,1', 'auth:sanctum'], function () {
-    Route::post('/films', 'App\Http\Controllers\FilmController@store');
-    Route::put('/films', 'App\Http\Controllers\FilmController@update');
-    Route::delete('/films', 'App\Http\Controllers\FilmController@delete');
+    Route::post('/films', 'App\Http\Controllers\FilmController@store')->middleware('role:admin');;
+    Route::put('/films/{id}', 'App\Http\Controllers\FilmController@update')->middleware('role:admin');;
+    Route::delete('/films/{id}', 'App\Http\Controllers\FilmController@delete')->middleware('role:admin');;
 
-    Route::post('/critics', 'App\Http\Controllers\CriticController@store');
+    Route::post('/films/{film_id}/critics', 'App\Http\Controllers\CriticController@store')->middleware('critic_limit');
 
-    Route::get('/user', 'App\Http\Controllers\UserController@index');
-    Route::put('/films', 'App\Http\Controllers\UserController@update');
+    Route::get('/users/{id}', 'App\Http\Controllers\UserController@show')->middleware('check_user_ownership');;
+    Route::put('/users/{id}/password', 'App\Http\Controllers\UserController@update')->middleware('check_user_ownership');;
 });
