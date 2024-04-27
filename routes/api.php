@@ -14,14 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/films', 'App\Http\Controllers\FilmController@index');
 
 Route::group(['middleware' => 'throttle:5,1'], function () {
     Route::post('/signup', 'App\Http\Controllers\AuthController@register');
     Route::post('/signin', 'App\Http\Controllers\AuthController@login');
     Route::get('/signout', ['middleware' => 'auth:sanctum', 'uses' => 'App\Http\Controllers\AuthController@logout']);
+});
+
+Route::group(['middleware' => 'throttle:60,1', 'auth:sanctum'], function () {
+    Route::post('/films', 'App\Http\Controllers\FilmController@store');
+    Route::put('/films', 'App\Http\Controllers\FilmController@update');
+    Route::delete('/films', 'App\Http\Controllers\FilmController@delete');
+
+    Route::post('/critics', 'App\Http\Controllers\CriticController@store');
+
+    Route::get('/user', 'App\Http\Controllers\UserController@index');
+    Route::put('/films', 'App\Http\Controllers\UserController@update');
 });
