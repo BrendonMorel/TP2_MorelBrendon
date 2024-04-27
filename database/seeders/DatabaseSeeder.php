@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([            
+        $this->call([
+            RoleSeeder::class,
             LanguageSeeder::class,
             FilmSeeder::class,
             ActorSeeder::class,
