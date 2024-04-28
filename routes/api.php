@@ -23,6 +23,6 @@ Route::group(['middleware' => ['throttle:60,1', 'auth:sanctum']], function () {
 
     Route::post('/films/{film_id}/critics', 'App\Http\Controllers\CriticController@store')->middleware('critic_limit');
 
-    Route::get('/users/{id}', 'App\Http\Controllers\UserController@index')->middleware('check_user_ownership');
+    Route::get('/users/{id}', 'App\Http\Controllers\UserController@show')->middleware('check_user_ownership');
     Route::put('/users/{id}/password', 'App\Http\Controllers\UserController@update')->middleware('check_user_ownership')->middleware('confirm_password_match');
 });

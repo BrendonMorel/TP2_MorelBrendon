@@ -75,8 +75,7 @@ class AuthController extends Controller
                 'password' => 'required|max:255',
                 'email' => 'required|email|unique:users',
                 'last_name' => 'required|max:50',
-                'first_name' => 'required|max:50',
-                'role_id' => 'required|exists:roles,id'
+                'first_name' => 'required|max:50'
             ]);
 
             // Créer un nouvel utilisateur
@@ -86,10 +85,10 @@ class AuthController extends Controller
                 'email' => $request['email'],
                 'last_name' => $request['last_name'],
                 'first_name' => $request['first_name'],
-                'role_id' => $request['role_id']
+                'role_id' => USER // Rôle USER par défaut
             ]);
 
-            return response()->json(['message' => USER_CREATED_MSG], CREATED);
+            return response()->json(['message' => CREATED_MSG], CREATED);
         } catch (ValidationException $e) {
             return response()->json(['error' => INVALID_DATA_MSG], BAD_REQUEST);
         } catch (Exception $exe) {
