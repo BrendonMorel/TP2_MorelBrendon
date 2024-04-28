@@ -71,10 +71,12 @@ class FilmController extends Controller
         }
     }
 
-    public function update(Request $request, int $id)
+    public function update(FilmRequest $request, int $id)
     {
         try {
-            $this->filmRepository->update($id, $request->toArray());
+            $validatedData = $request->validated();
+
+            $this->filmRepository->update($id, $validatedData);
 
             return response()->json(['message' => UPDATED_MSG], OK);
         } catch (ModelNotFoundException $e) {
