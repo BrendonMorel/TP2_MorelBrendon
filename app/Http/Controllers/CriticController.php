@@ -7,7 +7,6 @@ use App\Http\Resources\CriticResource;
 use App\Repository\CriticRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class CriticController extends Controller

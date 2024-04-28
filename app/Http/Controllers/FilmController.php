@@ -7,7 +7,6 @@ use App\Http\Resources\FilmResource;
 use App\Repository\FilmRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class FilmController extends Controller
