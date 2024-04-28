@@ -27,7 +27,9 @@ define('USER', 1);
 define('ADMIN', 2);
 
 // Messages JSON
-define('USER_CREATED_MSG', 'User registered successfully');
+define('CREATED_MSG', 'Created');
+define('UPDATED_MSG', 'Updated');
+define('NOT_FOUND_MSG', 'Not found');
 define('INVALID_DATA_MSG', 'Invalid datas');
 define('SERVER_ERROR_MSG', 'Server error');
 define('USER_LOGIN_FAILED_MSG', "Failed to login");

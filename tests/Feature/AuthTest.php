@@ -26,7 +26,7 @@ class AuthTest extends TestCase
         ]);
 
         // Assure que la réponse contient le message de création de l'utilisateur
-        $response->assertJson(['message' => USER_CREATED_MSG]);
+        $response->assertJson(['message' => CREATED_MSG]);
 
         // Assure que le code de statut HTTP est celui de "Created" (201)
         $response->assertStatus(CREATED);

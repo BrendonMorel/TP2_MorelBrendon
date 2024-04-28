@@ -58,9 +58,9 @@ class BaseRepository implements RepositoryInterface
 
     /**
      * @param int $id
-     * @return Model
+     * @return bool
      */
-    public function delete(int $id): Model
+    public function delete(int $id): bool
     {
         return $this->model->findOrFail($id)->delete();
     }
