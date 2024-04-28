@@ -49,9 +49,9 @@ class ActorController extends Controller
     public function show(int $id)
     {
         try {
-            $film = $this->actorRepository->getById($id);
+            $actor = $this->actorRepository->getById($id);
 
-            return (new ActorResource($film))->response()->setStatusCode(OK);
+            return (new ActorResource($actor))->response()->setStatusCode(OK);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => NOT_FOUND_MSG], NOT_FOUND);
         } catch (Exception $ex) {
@@ -62,9 +62,9 @@ class ActorController extends Controller
     public function index()
     {
         try {
-            $films = $this->actorRepository->getAll();
+            $actors = $this->actorRepository->getAll();
 
-            return ActorResource::collection($films)->response()->setStatusCode(OK);
+            return ActorResource::collection($actors)->response()->setStatusCode(OK);
         } catch (Exception $ex) {
             return response()->json(['error' => SERVER_ERROR_MSG], SERVER_ERROR);
         }
