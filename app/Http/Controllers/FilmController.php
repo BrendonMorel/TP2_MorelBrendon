@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Resources\FilmResource;
-use App\Models\Film;
-
+use App\Repository\FilmRepositoryInterface;
 
 class FilmController extends Controller
 {   
-    public function index(Request $request)
+    private FilmRepositoryInterface $filmRepository;
+
+    public function __construct(FilmRepositoryInterface $filmRepository)
     {
-        return response()->json(['message' => $request->user()->id], OK);
+        $this->filmRepository = $filmRepository;
     }
-    
 }
 

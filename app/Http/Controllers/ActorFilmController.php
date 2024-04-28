@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Resources\FilmResource;
-use App\Http\Resources\ActorResource;
-use App\Models\ActorFilm;
-use App\Models\Actor;
-use App\Models\Film;
-
+use App\Repository\ActorRepositoryInterface;
+use App\Repository\FilmRepositoryInterface;
 
 class ActorFilmController extends Controller
 {
-   
+    private ActorRepositoryInterface $actorRepository;
+    private FilmRepositoryInterface $filmRepository;
+
+    public function __construct(ActorRepositoryInterface $actorRepository, FilmRepositoryInterface $filmRepository)
+    {
+        $this->actorRepository = $actorRepository;
+        $this->filmRepository = $filmRepository;
+    }
 }
