@@ -11,7 +11,7 @@ class ConfirmPasswordMatch
     {
         // Vérifier si le mot de passe confirmé correspond au nouveau mot de passe
         if ($request->password_confirmation !== $request->new_password) {
-            abort(FORBIDDEN, 'Forbidden');
+            return response()->json(['error' => FORBIDDEN_MSG], FORBIDDEN);
         }
 
         return $next($request);

@@ -97,7 +97,7 @@ class AuthTest extends TestCase
     public function testCreateUserTooManyAttempts()
     {
         // Effectue plusieurs requêtes POST pour créer des utilisateurs
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i <= AUTH_THROTTLE; $i++) {
             $response = $this->postJson('/api/signup', [
                 'login' => $i . 'user',
                 'password' => 'password',
@@ -171,7 +171,7 @@ class AuthTest extends TestCase
     public function testLoginUserTooManyAttempts()
     {
         // Effectue plusieurs requêtes POST pour se connecter
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i <= AUTH_THROTTLE; $i++) {
             $response = $this->postJson('/api/signin', [
                 'login' => 'user',
                 'password' => 'password'
@@ -189,8 +189,7 @@ class AuthTest extends TestCase
     public function testLogoutUser()
     {
         Sanctum::actingAs(
-            $user = User::factory()->create(),
-            ['*']
+            $user = User::factory()->create()
         );
 
         // Effectue une requête GET pour se déconnecter
@@ -217,12 +216,11 @@ class AuthTest extends TestCase
     public function testLogoutUserTooManyAttempts()
     {
         Sanctum::actingAs(
-            $user = User::factory()->create(),
-            ['*']
+            $user = User::factory()->create()
         );
 
         // Effectue plusieurs requêtes GET pour se déconnecter
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i <= AUTH_THROTTLE; $i++) {
             $response = $this->getJson('/api/signout', [
                 'Accept' => 'application/json'
             ]);
@@ -232,6 +230,163 @@ class AuthTest extends TestCase
         $response->assertJson(['message' => 'Too Many Attempts.']);
 
         // Assure que le code de statut HTTP est celui de "Too Many Attempts" (429)
+        $response->assertStatus(TOO_MANY_ATTEMPTS);
+    }
+
+    public function testShowUser()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $response = $this->getJson("/api/users/{$user->id}", [
+            'Accept' => 'application/json'
+        ]);
+
+        $response->assertStatus(OK);
+    }
+
+    public function testShowUserNotAuthenticated()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->getJson("/api/users/{$user->id}", [
+            'Accept' => 'application/json'
+        ]);
+
+        $response->assertJson(['message' => UNAUTHENTICATED_MSG]);
+        $response->assertStatus(UNAUTHORIZED);
+    }
+
+    public function testShowOtherUser()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $id = $user->id + 1;
+
+        $response = $this->getJson("/api/users/{$id}", [
+            'Accept' => 'application/json'
+        ]);
+
+        $response->assertJson(['error' => FORBIDDEN_MSG]);
+        $response->assertStatus(FORBIDDEN);
+    }
+
+    public function testShowUserTooManyAttempts()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        for ($i = 0; $i <= DEFAULT_THROTTLE; $i++) {
+            $response = $this->getJson("/api/users/{$user->id}", [
+                'Accept' => 'application/json'
+            ]);
+        }
+
+        $response->assertJson(['message' => 'Too Many Attempts.']);
+        $response->assertStatus(TOO_MANY_ATTEMPTS);
+    }
+
+    public function testUpdatePasswordUser()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $newPassword = 'mdp1';
+
+        $response = $this->putJson("/api/users/{$user->id}/password", [
+            'new_password' => $newPassword,
+            'password_confirmation' => $newPassword
+        ]);
+
+        $response->assertJson(['message' => UPDATED_MSG]);
+        $response->assertStatus(OK);
+    }
+
+    public function testUpdatePasswordUserWithNonMatchingPasswords()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $response = $this->putJson("/api/users/{$user->id}/password", [
+            'new_password' => 'mdp1',
+            'password_confirmation' => 'mdp2'
+        ]);
+
+        $response->assertJson(['error' => FORBIDDEN_MSG]);
+        $response->assertStatus(FORBIDDEN);
+    }
+
+    public function testUpdatePasswordUserWithInvalidData()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $response = $this->putJson("/api/users/{$user->id}/password", [
+            'new_password' => '',
+            'password_confirmation' => ''
+        ]);
+
+        $response->assertJson(['error' => INVALID_DATA_MSG]);
+        $response->assertStatus(BAD_REQUEST);
+    }
+
+    public function testUpdatePasswordUserNotAuthenticated()
+    {
+        $user = User::factory()->create();
+
+        $newPassword = 'mdp1';
+
+        $response = $this->putJson("/api/users/{$user->id}/password", [
+            'new_password' => $newPassword,
+            'password_confirmation' => $newPassword
+        ]);
+
+        $response->assertJson(['message' => UNAUTHENTICATED_MSG]);
+        $response->assertStatus(UNAUTHORIZED);
+    }
+
+    public function testUpdatePasswordOtherUser()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $id = $user->id + 1;
+
+        $newPassword = 'mdp1';
+
+        $response = $this->putJson("/api/users/{$id}/password", [
+            'new_password' => $newPassword,
+            'password_confirmation' => $newPassword
+        ]);
+
+        $response->assertJson(['error' => FORBIDDEN_MSG]);
+        $response->assertStatus(FORBIDDEN);
+    }
+
+    public function testUpdatePasswordUserTooManyAttempts()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $newPassword = 'mdp1';
+
+        for ($i = 0; $i <= DEFAULT_THROTTLE; $i++) {
+            $response = $this->putJson("/api/users/{$user->id}/password", [
+                'new_password' => $newPassword,
+                'password_confirmation' => $newPassword
+            ]);
+        }
+
+        $response->assertJson(['message' => 'Too Many Attempts.']);
         $response->assertStatus(TOO_MANY_ATTEMPTS);
     }
 }

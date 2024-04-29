@@ -13,25 +13,6 @@ class CriticTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function testCreateCriticWithNoAuthenticatedUser()
-    {
-        // Créez un utilisateur
-        $user = User::factory()->create();
-
-        // Créez un film
-        $film = Film::factory()->create();
-
-        $response = $this->postJson("/api/films/{$film->id}/critics", [
-            'score' => 3,
-            'comment' => 'Voici un commentaire',
-            'user_id' => $user->id,
-            'film_id' => $film->id
-        ]);
-
-        $response->assertJson(['message' => UNAUTHENTICATED_MSG]);
-        $response->assertStatus(UNAUTHORIZED);
-    }
-
     public function testCreateCritic()
     {
         // Créez un utilisateur
@@ -52,6 +33,25 @@ class CriticTest extends TestCase
 
         $response->assertJson(['message' => CREATED_MSG]);
         $response->assertStatus(CREATED);
+    }
+
+    public function testCreateCriticWithNoAuthenticatedUser()
+    {
+        // Créez un utilisateur
+        $user = User::factory()->create();
+
+        // Créez un film
+        $film = Film::factory()->create();
+
+        $response = $this->postJson("/api/films/{$film->id}/critics", [
+            'score' => 3,
+            'comment' => 'Voici un commentaire',
+            'user_id' => $user->id,
+            'film_id' => $film->id
+        ]);
+
+        $response->assertJson(['message' => UNAUTHENTICATED_MSG]);
+        $response->assertStatus(UNAUTHORIZED);
     }
 
     public function testCreateCriticWithMissingField()
@@ -132,10 +132,10 @@ class CriticTest extends TestCase
         Sanctum::actingAs($user);
 
         // Effectue plusieurs requêtes POST pour créer des 'critics'
-        for ($i = 0; $i <= 60; $i++) {
+        for ($i = 0; $i <= DEFAULT_THROTTLE; $i++) {
             // Créez un film
             $film = Film::factory()->create();
-            
+
             $response = $this->postJson('/api/films/{$film->id}/critics', [
                 'score' => 3,
                 'comment' => 'Voici un commentaire',

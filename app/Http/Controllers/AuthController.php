@@ -279,9 +279,9 @@ class AuthController extends Controller
             return response()->json(['message' => UPDATED_MSG], OK);
         } catch (ValidationException $e) {
             return response()->json(['error' => INVALID_DATA_MSG], BAD_REQUEST);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $ex) {
             return response()->json(['error' => NOT_FOUND_MSG], NOT_FOUND);
-        } catch (Exception $ex) {
+        } catch (Exception $exe) {
             return response()->json(['error' => SERVER_ERROR_MSG], SERVER_ERROR);
         }
     }
