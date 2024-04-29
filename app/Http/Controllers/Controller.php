@@ -32,8 +32,8 @@ define('UPDATED_MSG', 'Updated');
 define('NOT_FOUND_MSG', 'Not found');
 define('INVALID_DATA_MSG', 'Invalid datas');
 define('SERVER_ERROR_MSG', 'Server error');
-define('USER_LOGIN_FAILED_MSG', "Failed to login");
-define('USER_LOGOUT_FAILED_MSG', "Failed to logout");
+define('USER_LOGIN_FAILED_MSG', "Failed to log in");
+define('USER_LOGOUT_FAILED_MSG', "Failed to log out");
 
 /** * @OA\Info(title="Films API", version="0.1") */
 class Controller extends BaseController

@@ -184,37 +184,37 @@ class AuthController extends Controller
         }
     }
 
-/**
- * @OA\Get(
- *     path="/api/signout",
- *     tags={"Authentification"},
- *     summary="Déconnexion de l'utilisateur",
- *     description="Déconnecte l'utilisateur en révoquant tous ses jetons d'authentification.",
- *     security={{"Token": {}}},
- *     @OA\Response(
- *         response=204,
- *         description="Déconnexion réussie - Les jetons d'authentification ont été révoqués.",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *         )
- *     ),
- *     @OA\Response(
- *         response=401,
- *         description="Échec de la déconnexion - Utilisateur non authentifié."
- *     ),
- *     @OA\Response(
- *         response=500,
- *         description="Erreur de serveur."
- *     ),
- * )
- *
- * @OA\SecurityScheme(
- *     securityScheme="Token",
- *     type="http",
- *     scheme="bearer",
- *     bearerFormat="JWT"
- * )
- */
+    /**
+     * @OA\Get(
+     *     path="/api/signout",
+     *     tags={"Authentification"},
+     *     summary="Déconnexion de l'utilisateur",
+     *     description="Déconnecte l'utilisateur en révoquant tous ses jetons d'authentification.",
+     *     security={{"Token": {}}},
+     *     @OA\Response(
+     *         response=204,
+     *         description="Déconnexion réussie - Les jetons d'authentification ont été révoqués.",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Échec de la déconnexion - Utilisateur non authentifié."
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur de serveur."
+     *     ),
+     * )
+     *
+     * @OA\SecurityScheme(
+     *     securityScheme="Token",
+     *     type="http",
+     *     scheme="bearer",
+     *     bearerFormat="JWT"
+     * )
+     */
     public function logout(Request $request)
     {
         try {
@@ -261,6 +261,26 @@ class AuthController extends Controller
             $users = $this->userRepository->getAll();
 
             return UserResource::collection($users)->response()->setStatusCode(OK);
+        } catch (Exception $ex) {
+            return response()->json(['error' => SERVER_ERROR_MSG], SERVER_ERROR);
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'new_password' => 'required|max:255'
+            ]);
+
+            $user_id = $request->user()->id;
+            $this->userRepository->updatePassword($user_id, $validatedData);
+
+            return response()->json(['message' => UPDATED_MSG], OK);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => INVALID_DATA_MSG], BAD_REQUEST);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => NOT_FOUND_MSG], NOT_FOUND);
         } catch (Exception $ex) {
             return response()->json(['error' => SERVER_ERROR_MSG], SERVER_ERROR);
         }
