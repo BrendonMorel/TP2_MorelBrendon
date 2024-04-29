@@ -3,19 +3,17 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Film;
 use App\Models\Critic;
-use App\Models\Language;
 use Laravel\Sanctum\Sanctum;
 
 class CriticTest extends TestCase
 {
     use DatabaseMigrations;
-   
-    public function testStoreCriticWithNoAuthenticatedUser()
+
+    public function testCreateCriticWithNoAuthenticatedUser()
     {
         // Créez un utilisateur
         $user = User::factory()->create();
@@ -34,7 +32,7 @@ class CriticTest extends TestCase
         $response->assertStatus(UNAUTHORIZED);
     }
 
-    public function testStoreCriticWithNoExistingUserCritic()
+    public function testCreateCritic()
     {
         // Créez un utilisateur
         $user = User::factory()->create();
@@ -56,7 +54,7 @@ class CriticTest extends TestCase
         $response->assertStatus(CREATED);
     }
 
-    public function testStoreCriticWithMissingField()
+    public function testCreateCriticWithMissingField()
     {
         // Créez un utilisateur
         $user = User::factory()->create();
@@ -76,7 +74,7 @@ class CriticTest extends TestCase
         $response->assertStatus(INVALID_DATA);
     }
 
-    public function testStoreCriticWithInvalidData()
+    public function testCreateCriticWithInvalidData()
     {
         // Créez un utilisateur
         $user = User::factory()->create();
@@ -97,7 +95,7 @@ class CriticTest extends TestCase
         $response->assertStatus(INVALID_DATA);
     }
 
-    public function testStoreCriticWithCriticLimitMiddleware()
+    public function testCreateCriticWithCriticLimitMiddleware()
     {
         // Créez un utilisateur
         $user = User::factory()->create();
@@ -123,5 +121,33 @@ class CriticTest extends TestCase
 
         $response->assertJson(['error' => FORBIDDEN_MSG]);
         $response->assertStatus(FORBIDDEN);
+    }
+
+    public function testCreateCriticTooManyAttempts()
+    {
+        // Créez un utilisateur
+        $user = User::factory()->create();
+
+        // Authentifiez l'utilisateur
+        Sanctum::actingAs($user);
+
+        // Effectue plusieurs requêtes POST pour créer des 'critics'
+        for ($i = 0; $i <= 60; $i++) {
+            // Créez un film
+            $film = Film::factory()->create();
+            
+            $response = $this->postJson('/api/films/{$film->id}/critics', [
+                'score' => 3,
+                'comment' => 'Voici un commentaire',
+                'user_id' => $user->id,
+                'film_id' => $film->id
+            ]);
+        }
+
+        // Assure que le message "Too Many Attempts" est retourné
+        $response->assertJson(['message' => 'Too Many Attempts.']);
+
+        // Assure que le code de statut HTTP est celui de "Too Many Attempts" (429)
+        $response->assertStatus(TOO_MANY_ATTEMPTS);
     }
 }
