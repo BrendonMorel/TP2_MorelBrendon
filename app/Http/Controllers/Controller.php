@@ -29,6 +29,8 @@ define('ADMIN', 2);
 // Messages JSON
 define('CREATED_MSG', 'Created');
 define('UPDATED_MSG', 'Updated');
+define('FORBIDDEN_MSG', 'Forbidden');
+define('UNAUTHENTICATED_MSG', 'Unauthenticated.');
 define('NOT_FOUND_MSG', 'Not found');
 define('INVALID_DATA_MSG', 'Invalid datas');
 define('SERVER_ERROR_MSG', 'Server error');

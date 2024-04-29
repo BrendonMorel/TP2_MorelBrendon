@@ -17,7 +17,7 @@ class CheckCriticLimit
         // Vérifiez si l'utilisateur a déjà créé une critique pour ce film
         $existingCritic = Critic::where('user_id', $user_id)->where('film_id', $film_id)->exists();
         if ($existingCritic) {
-            abort(FORBIDDEN, 'Forbidden');
+            return response()->json(['error' => FORBIDDEN_MSG], FORBIDDEN);
         }
 
         return $next($request);

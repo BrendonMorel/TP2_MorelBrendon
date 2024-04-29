@@ -18,6 +18,6 @@ class CheckUserOwnership
         }
 
         // Sinon, retourner une réponse d'erreur
-        abort(FORBIDDEN, 'Forbidden');
+        return response()->json(['error' => FORBIDDEN_MSG], FORBIDDEN);
     }
 }

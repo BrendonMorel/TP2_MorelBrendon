@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -20,6 +19,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
+            'role_id' => 1
         ];
     }
 

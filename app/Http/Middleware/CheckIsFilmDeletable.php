@@ -25,7 +25,7 @@ class CheckIsFilmDeletable
         $existingActorRelation = $film->actors()->exists();
         
         if ($existingCriticRelation || $existingActorRelation) {
-            abort(FORBIDDEN, 'Forbidden');
+            return response()->json(['error' => FORBIDDEN_MSG], FORBIDDEN);
         }
 
         return $next($request);
