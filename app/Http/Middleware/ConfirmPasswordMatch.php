@@ -10,7 +10,7 @@ class ConfirmPasswordMatch
 {
     public function handle(Request $request, Closure $next)
     {
-        // Vérifiez si le mot de passe confirmé correspond au nouveau mot de passe
+        // Vérifier si le mot de passe confirmé correspond au nouveau mot de passe
         if (!Hash::check($request->password_confirmation, $request->new_password)) {
             abort(FORBIDDEN, 'Forbidden');
         }
