@@ -49,9 +49,9 @@ class BaseRepository implements RepositoryInterface
     /**
      * @param int $id
      * @param array $content
-     * @return Model
+     * @return bool
      */
-    public function update(int $id, array $content): Model
+    public function update(int $id, array $content): bool
     {
         return $this->model->findOrFail($id)->update($content);
     }
