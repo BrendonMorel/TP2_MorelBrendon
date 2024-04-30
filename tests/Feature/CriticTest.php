@@ -145,7 +145,7 @@ class CriticTest extends TestCase
         }
 
         // Assure que le message "Too Many Attempts" est retourné
-        $response->assertJson(['message' => 'Too Many Attempts.']);
+        $response->assertJson(['message' => TOO_MANY_ATTEMPTS_MSG]);
 
         // Assure que le code de statut HTTP est celui de "Too Many Attempts" (429)
         $response->assertStatus(TOO_MANY_ATTEMPTS);

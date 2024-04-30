@@ -33,6 +33,7 @@ define('SERVER_ERROR', 500);
 // Messages JSON
 define('CREATED_MSG', 'Created');
 define('UPDATED_MSG', 'Updated');
+define('TOO_MANY_ATTEMPTS_MSG', 'Too Many Attempts.');
 define('FORBIDDEN_MSG', 'Forbidden');
 define('UNAUTHENTICATED_MSG', 'Unauthenticated.');
 define('NOT_FOUND_MSG', 'Not found');

@@ -108,7 +108,7 @@ class AuthTest extends TestCase
         }
 
         // Assure que le message "Too Many Attempts" est retourné
-        $response->assertJson(['message' => 'Too Many Attempts.']);
+        $response->assertJson(['message' => TOO_MANY_ATTEMPTS_MSG]);
 
         // Assure que le code de statut HTTP est celui de "Too Many Attempts" (429)
         $response->assertStatus(TOO_MANY_ATTEMPTS);
@@ -179,7 +179,7 @@ class AuthTest extends TestCase
         }
 
         // Assure que le message "Too Many Attempts" est retourné
-        $response->assertJson(['message' => 'Too Many Attempts.']);
+        $response->assertJson(['message' => TOO_MANY_ATTEMPTS_MSG]);
 
         // Assure que le code de statut HTTP est celui de "Too Many Attempts" (429)
         $response->assertStatus(TOO_MANY_ATTEMPTS);
@@ -210,7 +210,7 @@ class AuthTest extends TestCase
         $response->assertStatus(UNAUTHORIZED);
 
         // Assure que le contenu de la réponse correspond à l'erreur attendue
-        $response->assertJson(['message' => 'Unauthenticated.']);
+        $response->assertJson(['message' => UNAUTHENTICATED_MSG]);
     }
 
     public function testLogoutUserTooManyAttempts()
@@ -227,7 +227,7 @@ class AuthTest extends TestCase
         }
 
         // Assure que le message "Too Many Attempts" est retourné
-        $response->assertJson(['message' => 'Too Many Attempts.']);
+        $response->assertJson(['message' => TOO_MANY_ATTEMPTS_MSG]);
 
         // Assure que le code de statut HTTP est celui de "Too Many Attempts" (429)
         $response->assertStatus(TOO_MANY_ATTEMPTS);
@@ -286,7 +286,7 @@ class AuthTest extends TestCase
             ]);
         }
 
-        $response->assertJson(['message' => 'Too Many Attempts.']);
+        $response->assertJson(['message' => TOO_MANY_ATTEMPTS_MSG]);
         $response->assertStatus(TOO_MANY_ATTEMPTS);
     }
 
@@ -386,7 +386,7 @@ class AuthTest extends TestCase
             ]);
         }
 
-        $response->assertJson(['message' => 'Too Many Attempts.']);
+        $response->assertJson(['message' => TOO_MANY_ATTEMPTS_MSG]);
         $response->assertStatus(TOO_MANY_ATTEMPTS);
     }
 }

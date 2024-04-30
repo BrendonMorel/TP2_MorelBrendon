@@ -89,7 +89,7 @@ class AuthController extends Controller
             ]);
 
             // Créer un nouvel utilisateur
-            User::create([
+            $this->userRepository->create([
                 'login' => $request['login'],
                 'password' => bcrypt($request['password']),
                 'email' => $request['email'],
@@ -225,7 +225,7 @@ class AuthController extends Controller
             $user->tokens()->delete();
             return response()->noContent();
         } catch (Exception $ex) {
-            return response()->json(['error' => 'Server error'], SERVER_ERROR);
+            return response()->json(['error' => SERVER_ERROR_MSG], SERVER_ERROR);
         }
     }
 
