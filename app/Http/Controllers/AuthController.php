@@ -94,8 +94,7 @@ class AuthController extends Controller
                 'password' => bcrypt($request['password']),
                 'email' => $request['email'],
                 'last_name' => $request['last_name'],
-                'first_name' => $request['first_name'],
-                'role_id' => USER // Rôle USER par défaut
+                'first_name' => $request['first_name']
             ]);
 
             return response()->json(['message' => CREATED_MSG], CREATED);
