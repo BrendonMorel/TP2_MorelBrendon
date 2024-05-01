@@ -269,7 +269,8 @@ class AuthController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'new_password' => 'required|max:255'
+                'new_password' => 'required|max:255',
+                'password_confirmation' => 'required|max:255|same:new_password'
             ]);
 
             $user_id = $request->user()->id;

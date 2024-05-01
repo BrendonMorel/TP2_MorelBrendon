@@ -65,7 +65,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\CheckRole::class,
         'critic_limit' => \App\Http\Middleware\CheckCriticLimit::class,
         'check_user_ownership' => \App\Http\Middleware\CheckUserOwnership::class,
-        'confirm_password_match' => \App\Http\Middleware\ConfirmPasswordMatch::class,
         'check_is_film_deletable' => \App\Http\Middleware\CheckIsFilmDeletable::class,
     ];
 }

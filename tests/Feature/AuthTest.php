@@ -298,7 +298,7 @@ class AuthTest extends TestCase
 
         $newPassword = 'mdp1';
 
-        $response = $this->putJson("/api/users/{$user->id}/password", [
+        $response = $this->patchJson("/api/users/{$user->id}/password", [
             'new_password' => $newPassword,
             'password_confirmation' => $newPassword
         ]);
@@ -313,13 +313,13 @@ class AuthTest extends TestCase
             $user = User::factory()->create()
         );
 
-        $response = $this->putJson("/api/users/{$user->id}/password", [
+        $response = $this->patchJson("/api/users/{$user->id}/password", [
             'new_password' => 'mdp1',
             'password_confirmation' => 'mdp2'
         ]);
 
-        $response->assertJson(['error' => FORBIDDEN_MSG]);
-        $response->assertStatus(FORBIDDEN);
+        $response->assertJson(['error' => INVALID_DATA_MSG]);
+        $response->assertStatus(BAD_REQUEST);
     }
 
     public function testUpdatePasswordUserWithInvalidData()
@@ -328,7 +328,7 @@ class AuthTest extends TestCase
             $user = User::factory()->create()
         );
 
-        $response = $this->putJson("/api/users/{$user->id}/password", [
+        $response = $this->patchJson("/api/users/{$user->id}/password", [
             'new_password' => '',
             'password_confirmation' => ''
         ]);
@@ -343,7 +343,7 @@ class AuthTest extends TestCase
 
         $newPassword = 'mdp1';
 
-        $response = $this->putJson("/api/users/{$user->id}/password", [
+        $response = $this->patchJson("/api/users/{$user->id}/password", [
             'new_password' => $newPassword,
             'password_confirmation' => $newPassword
         ]);
@@ -362,7 +362,7 @@ class AuthTest extends TestCase
 
         $newPassword = 'mdp1';
 
-        $response = $this->putJson("/api/users/{$id}/password", [
+        $response = $this->patchJson("/api/users/{$id}/password", [
             'new_password' => $newPassword,
             'password_confirmation' => $newPassword
         ]);
@@ -380,7 +380,7 @@ class AuthTest extends TestCase
         $newPassword = 'mdp1';
 
         for ($i = 0; $i <= DEFAULT_THROTTLE; $i++) {
-            $response = $this->putJson("/api/users/{$user->id}/password", [
+            $response = $this->patchJson("/api/users/{$user->id}/password", [
                 'new_password' => $newPassword,
                 'password_confirmation' => $newPassword
             ]);
