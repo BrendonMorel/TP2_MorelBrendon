@@ -12,4 +12,5 @@ use App\Models\User;
 class UserTest extends TestCase
 {
     use DatabaseMigrations; 
+    // Voir AuthTest.php
 }

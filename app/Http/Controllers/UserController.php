@@ -15,4 +15,6 @@ class UserController extends Controller
     {
         $this->userRepository = $userRepository;
     }
+
+    // Voir AuthController.php
 }

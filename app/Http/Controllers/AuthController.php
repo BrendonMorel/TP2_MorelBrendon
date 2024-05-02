@@ -88,7 +88,6 @@ class AuthController extends Controller
                 'first_name' => 'required|max:50'
             ]);
 
-            // Créer un nouvel utilisateur
             $this->userRepository->create([
                 'login' => $request['login'],
                 'password' => bcrypt($request['password']),
@@ -247,7 +246,7 @@ class AuthController extends Controller
      *     ),
      *     @OA\Response(
      *         response=403,
-     *         description="Forbidden"
+     *         description="Interdit - Vous n'avez pas les permissions"
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -343,20 +342,20 @@ class AuthController extends Controller
      *         )
      *     ),
      *     @OA\Response(
-     *         response=400,
-     *         description="Données invalides - Le nouveau mot de passe et sa confirmation ne correspondent pas"
-     *     ),
-     *     @OA\Response(
      *         response=401,
      *         description="Non autorisé - Utilisateur non authentifié"
      *     ),
      *     @OA\Response(
      *         response=403,
-     *         description="Forbidden"
+     *         description="Interdit - Vous n'avez pas les permissions"
      *     ),
      *     @OA\Response(
      *         response=404,
      *         description="Utilisateur non trouvé - L'ID de l'utilisateur n'existe pas"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Données invalides - Le nouveau mot de passe et sa confirmation ne correspondent pas"
      *     ),
      *     @OA\Response(
      *         response=500,
@@ -377,7 +376,7 @@ class AuthController extends Controller
 
             return response()->json(['message' => UPDATED_MSG], OK);
         } catch (ValidationException $e) {
-            return response()->json(['error' => INVALID_DATA_MSG], BAD_REQUEST);
+            return response()->json(['error' => INVALID_DATA_MSG], INVALID_DATA);
         } catch (ModelNotFoundException $ex) {
             return response()->json(['error' => NOT_FOUND_MSG], NOT_FOUND);
         } catch (Exception $exe) {

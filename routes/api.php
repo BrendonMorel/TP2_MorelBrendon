@@ -22,7 +22,7 @@ Route::group(['middleware' => ['throttle:60,1', 'auth:sanctum']], function () {
     Route::put('/films/{id}', 'App\Http\Controllers\FilmController@update')->middleware('role:admin');
     Route::delete('/films/{id}', 'App\Http\Controllers\FilmController@destroy')->middleware('role:admin')->middleware('check.film.has.relation');
 
-    Route::post('/films/{film_id}/critics', 'App\Http\Controllers\CriticController@store')->middleware('check.critic.limit');
+    Route::post('/films/{film_id}/critics', 'App\Http\Controllers\FilmCriticController@store')->middleware('check.critic.limit');
 
     Route::get('/users/{id}', 'App\Http\Controllers\AuthController@show')->middleware('check.user.ownership');
     Route::patch('/users/{id}/password', 'App\Http\Controllers\AuthController@updatePassword')->middleware('check.user.ownership');

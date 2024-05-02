@@ -93,7 +93,7 @@ class FilmController extends Controller
      *     ),
      *     @OA\Response(
      *         response=403,
-     *         description="Forbidden"
+     *         description="Interdit - Vous n'avez pas les permissions"
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -139,7 +139,7 @@ class FilmController extends Controller
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="Film supprimé avec succès - Aucun contenu retourné",
+     *         description="Film supprimé avec succès",
      *         @OA\MediaType(
      *             mediaType="application/json",
      *         )
@@ -150,7 +150,7 @@ class FilmController extends Controller
      *     ),
      *     @OA\Response(
      *         response=403,
-     *         description="Forbidden"
+     *         description="Interdit - Vous n'avez pas les permissions"
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -283,7 +283,7 @@ class FilmController extends Controller
      *     ),
      *     @OA\Response(
      *         response=403,
-     *         description="Forbidden"
+     *         description="Interdit - Vous n'avez pas les permissions"
      *     ),
      *     @OA\Response(
      *         response=404,

@@ -319,7 +319,7 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertJson(['error' => INVALID_DATA_MSG]);
-        $response->assertStatus(BAD_REQUEST);
+        $response->assertStatus(INVALID_DATA);
     }
 
     public function testUpdatePasswordUserWithInvalidData()
@@ -334,7 +334,7 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertJson(['error' => INVALID_DATA_MSG]);
-        $response->assertStatus(BAD_REQUEST);
+        $response->assertStatus(INVALID_DATA);
     }
 
     public function testUpdatePasswordUserNotAuthenticated()
