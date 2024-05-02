@@ -2,13 +2,13 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Films API",
-        "version": "0.1"
+        "version": "0.2"
     },
     "paths": {
         "/api/signup": {
             "post": {
                 "tags": [
-                    "Users"
+                    "Authentification"
                 ],
                 "summary": "Crée un utilisateur",
                 "description": "Crée un nouvel utilisateur avec les données fournies.",
@@ -151,6 +151,444 @@
                     },
                     "500": {
                         "description": "Erreur de serveur."
+                    }
+                },
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Récupère un utilisateur par son ID",
+                "description": "Récupère les informations d'un utilisateur en fonction de son ID.",
+                "operationId": "b3d27f655646f5454083980a35a6b4f5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'utilisateur à récupérer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur récupéré avec succès",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé - L'ID fourni ne correspond à aucun utilisateur"
+                    },
+                    "500": {
+                        "description": "Erreur de serveur"
+                    }
+                },
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/password": {
+            "patch": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Mettre à jour le mot de passe de l'utilisateur",
+                "description": "Permet à l'utilisateur de mettre à jour son mot de passe.",
+                "operationId": "da4638221a704ca9719a5df92d943473",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'utilisateur",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Nouveaux mots de passe de l'utilisateur",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "new_password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "new_password": {
+                                        "description": "Nouveau mot de passe de l'utilisateur",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "password_confirmation": {
+                                        "description": "Confirmation du nouveau mot de passe",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe mis à jour avec succès",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Données invalides - Le nouveau mot de passe et sa confirmation ne correspondent pas"
+                    },
+                    "401": {
+                        "description": "Non autorisé - Utilisateur non authentifié"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé - L'ID de l'utilisateur n'existe pas"
+                    },
+                    "500": {
+                        "description": "Erreur de serveur"
+                    }
+                },
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ]
+            }
+        },
+        "/api/films/{film_id}/critics": {
+            "post": {
+                "tags": [
+                    "Critics"
+                ],
+                "summary": "Enregistrer une nouvelle critique",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "eef96716ea92eb54a4faf7af89d49c22",
+                "parameters": [
+                    {
+                        "name": "film_id",
+                        "in": "path",
+                        "description": "ID du film",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "score",
+                                    "comment"
+                                ],
+                                "properties": {
+                                    "score": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 8.5
+                                    },
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "Great movie!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Invalid data"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ]
+            }
+        },
+        "/api/films": {
+            "post": {
+                "tags": [
+                    "Films"
+                ],
+                "summary": "Crée un nouveau film",
+                "description": "Crée un nouveau film dans la base de données avec les données fournies.",
+                "operationId": "ce1501bac824524d1e4706075650bf11",
+                "requestBody": {
+                    "description": "Données du nouveau film",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "release_year",
+                                    "length",
+                                    "description",
+                                    "rating",
+                                    "language_id",
+                                    "special_features",
+                                    "image"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Titre du film",
+                                        "type": "string"
+                                    },
+                                    "release_year": {
+                                        "description": "Année de sortie du film",
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "default": 2000
+                                    },
+                                    "length": {
+                                        "description": "Durée du film en minutes",
+                                        "type": "integer",
+                                        "default": 60
+                                    },
+                                    "description": {
+                                        "description": "Description du film",
+                                        "type": "string"
+                                    },
+                                    "rating": {
+                                        "description": "Classification du film",
+                                        "type": "string",
+                                        "maxLength": 4
+                                    },
+                                    "language_id": {
+                                        "description": "ID de la langue du film",
+                                        "type": "integer",
+                                        "default": 1
+                                    },
+                                    "special_features": {
+                                        "description": "Caractéristiques spéciales du film",
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "description": "URL de l'image du film",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Film créé avec succès",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé - Utilisateur non authentifié"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Entité non traitable - Erreur de validation"
+                    },
+                    "500": {
+                        "description": "Erreur de serveur"
+                    }
+                },
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ]
+            }
+        },
+        "/api/films/{id}": {
+            "put": {
+                "tags": [
+                    "Films"
+                ],
+                "summary": "Met à jour un film par son ID",
+                "description": "Met à jour un film dans la base de données en fonction de son ID.",
+                "operationId": "d2fbe78b6e79c3f1cfb5067d25f9a039",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du film à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Données du film à mettre à jour",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "release_year",
+                                    "length",
+                                    "description",
+                                    "rating",
+                                    "language_id",
+                                    "special_features",
+                                    "image"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Titre du film",
+                                        "type": "string"
+                                    },
+                                    "release_year": {
+                                        "description": "Année de sortie du film",
+                                        "type": "integer",
+                                        "default": 1999
+                                    },
+                                    "length": {
+                                        "description": "Durée du film en minutes",
+                                        "type": "integer",
+                                        "default": 100
+                                    },
+                                    "description": {
+                                        "description": "Description du film",
+                                        "type": "string"
+                                    },
+                                    "rating": {
+                                        "description": "Classification du film",
+                                        "type": "string",
+                                        "maxLength": 4
+                                    },
+                                    "language_id": {
+                                        "description": "ID de la langue du film",
+                                        "type": "integer",
+                                        "default": 2
+                                    },
+                                    "special_features": {
+                                        "description": "Caractéristiques spéciales du film",
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "description": "URL de l'image du film",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Film mis à jour avec succès",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé - Utilisateur non authentifié"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Film non trouvé - L'ID du film n'existe pas"
+                    },
+                    "422": {
+                        "description": "Entité non traitable - Erreur de validation"
+                    },
+                    "500": {
+                        "description": "Erreur de serveur"
+                    }
+                },
+                "security": [
+                    {
+                        "Token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Films"
+                ],
+                "summary": "Supprime un film par son ID",
+                "description": "Supprime un film de la base de données en fonction de son ID.",
+                "operationId": "decacbac55d9f088563f35def674b92a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du film à supprimer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Film supprimé avec succès - Aucun contenu retourné",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé - Utilisateur non authentifié"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Film non trouvé - L'ID du film n'existe pas"
+                    },
+                    "500": {
+                        "description": "Erreur de serveur"
                     }
                 },
                 "security": [

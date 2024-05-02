@@ -7,17 +7,18 @@ use App\Models\Film;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckIsFilmDeletable
+class CheckFilmHasRelations
 {
     public function handle(Request $request, Closure $next)
     {
         $film_id = $request->route('id');
 
         $film = Film::find($film_id);
+        
         if (!$film) {
             return $next($request);
         }
-        
+
         // Vérifier s'il existe une critique pour ce film
         $existingCriticRelation = $film->critics()->exists();
 
@@ -27,7 +28,7 @@ class CheckIsFilmDeletable
         if ($existingCriticRelation || $existingActorRelation) {
             return response()->json(['error' => FORBIDDEN_MSG], FORBIDDEN);
         }
-
+        
         return $next($request);
     }
 }

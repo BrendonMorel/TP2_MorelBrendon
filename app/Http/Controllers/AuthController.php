@@ -24,7 +24,7 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/signup",
-     *     tags={"Users"},
+     *     tags={"Authentification"},
      *     summary="Crée un utilisateur",
      *     description="Crée un nouvel utilisateur avec les données fournies.",
      *     @OA\RequestBody(
@@ -206,13 +206,6 @@ class AuthController extends Controller
      *         description="Erreur de serveur."
      *     ),
      * )
-     *
-     * @OA\SecurityScheme(
-     *     securityScheme="Token",
-     *     type="http",
-     *     scheme="bearer",
-     *     bearerFormat="JWT"
-     * )
      */
     public function logout(Request $request)
     {
@@ -228,6 +221,44 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/users/{id}",
+     *     tags={"Utilisateurs"},
+     *     summary="Récupère un utilisateur par son ID",
+     *     description="Récupère les informations d'un utilisateur en fonction de son ID.",
+     *     security={{"Token": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de l'utilisateur à récupérer",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Utilisateur récupéré avec succès",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Utilisateur non trouvé - L'ID fourni ne correspond à aucun utilisateur"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur de serveur"
+     *     )
+     * )
+     */
     public function show(int $id)
     {
         try {
@@ -265,6 +296,74 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @OA\Patch(
+     *     path="/api/users/{id}/password",
+     *     tags={"Utilisateurs"},
+     *     summary="Mettre à jour le mot de passe de l'utilisateur",
+     *     description="Permet à l'utilisateur de mettre à jour son mot de passe.",
+     *     security={{"Token": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de l'utilisateur",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Nouveaux mots de passe de l'utilisateur",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 required={"new_password", "password_confirmation"},
+     *                 @OA\Property(
+     *                     property="new_password",
+     *                     type="string",
+     *                     maxLength=255,
+     *                     description="Nouveau mot de passe de l'utilisateur"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password_confirmation",
+     *                     type="string",
+     *                     maxLength=255,
+     *                     description="Confirmation du nouveau mot de passe"
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mot de passe mis à jour avec succès",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Données invalides - Le nouveau mot de passe et sa confirmation ne correspondent pas"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non autorisé - Utilisateur non authentifié"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Utilisateur non trouvé - L'ID de l'utilisateur n'existe pas"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur de serveur"
+     *     )
+     * )
+     */
     public function updatePassword(Request $request)
     {
         try {

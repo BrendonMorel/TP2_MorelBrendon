@@ -26,9 +26,7 @@ class CriticTest extends TestCase
 
         $response = $this->postJson("/api/films/{$film->id}/critics", [
             'score' => 3,
-            'comment' => 'Voici un commentaire',
-            'user_id' => $user->id,
-            'film_id' => $film->id
+            'comment' => 'Voici un commentaire'
         ]);
 
         $response->assertJson(['message' => CREATED_MSG]);
@@ -45,9 +43,7 @@ class CriticTest extends TestCase
 
         $response = $this->postJson("/api/films/{$film->id}/critics", [
             'score' => 3,
-            'comment' => 'Voici un commentaire',
-            'user_id' => $user->id,
-            'film_id' => $film->id
+            'comment' => 'Voici un commentaire'
         ]);
 
         $response->assertJson(['message' => UNAUTHENTICATED_MSG]);
@@ -66,9 +62,7 @@ class CriticTest extends TestCase
         $film = Film::factory()->create();
 
         $response = $this->postJson("/api/films/{$film->id}/critics", [
-            'score' => 3,
-            'user_id' => $user->id,
-            'film_id' => $film->id
+            'score' => 3
         ]);
 
         $response->assertStatus(INVALID_DATA);
@@ -88,8 +82,6 @@ class CriticTest extends TestCase
         $response = $this->postJson("/api/films/{$film->id}/critics", [
             'score' => 3,
             'comment' => 4, // Invalide
-            'user_id' => $user->id,
-            'film_id' => $film->id
         ]);
 
         $response->assertStatus(INVALID_DATA);
@@ -114,9 +106,7 @@ class CriticTest extends TestCase
 
         $response = $this->postJson("/api/films/{$film->id}/critics", [
             'score' => 3,
-            'comment' => 'Voici un commentaire',
-            'user_id' => $user->id,
-            'film_id' => $film->id
+            'comment' => 'Voici un commentaire'
         ]);
 
         $response->assertJson(['error' => FORBIDDEN_MSG]);
@@ -138,9 +128,7 @@ class CriticTest extends TestCase
 
             $response = $this->postJson('/api/films/{$film->id}/critics', [
                 'score' => 3,
-                'comment' => 'Voici un commentaire',
-                'user_id' => $user->id,
-                'film_id' => $film->id
+                'comment' => 'Voici un commentaire'
             ]);
         }
 

@@ -63,8 +63,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\CheckRole::class,
-        'critic_limit' => \App\Http\Middleware\CheckCriticLimit::class,
-        'check_user_ownership' => \App\Http\Middleware\CheckUserOwnership::class,
-        'check_is_film_deletable' => \App\Http\Middleware\CheckIsFilmDeletable::class,
+        'check.critic.limit' => \App\Http\Middleware\CheckCriticLimit::class,
+        'check.user.ownership' => \App\Http\Middleware\CheckUserOwnership::class,
+        'check.film.has.relation' => \App\Http\Middleware\CheckFilmHasRelations::class,
     ];
 }

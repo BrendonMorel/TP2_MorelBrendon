@@ -23,9 +23,7 @@ class CriticRequest extends FormRequest
     {
         return [
             'score' => 'required|numeric|between:0,999.99',
-            'comment' => 'required|string',
-            'user_id' => 'required|integer|exists:users,id',
-            'film_id' => 'required|integer|exists:films,id'
+            'comment' => 'required|string'
         ];
     }
 }

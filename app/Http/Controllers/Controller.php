@@ -37,12 +37,19 @@ define('TOO_MANY_ATTEMPTS_MSG', 'Too Many Attempts.');
 define('FORBIDDEN_MSG', 'Forbidden');
 define('UNAUTHENTICATED_MSG', 'Unauthenticated.');
 define('NOT_FOUND_MSG', 'Not found');
-define('INVALID_DATA_MSG', 'Invalid datas');
+define('INVALID_DATA_MSG', 'Invalid data');
 define('SERVER_ERROR_MSG', 'Server error');
 define('USER_LOGIN_FAILED_MSG', "Failed to log in");
 define('USER_LOGOUT_FAILED_MSG', "Failed to log out");
 
-/** * @OA\Info(title="Films API", version="0.1") */
+/** * @OA\Info(title="Films API", version="0.2")
+ *  * @OA\SecurityScheme(
+ *     securityScheme="Token",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ */
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
